@@ -1,0 +1,13 @@
+ansible_ssh_common_args: '-o ProxyCommand="sshpass -p {{NAT_SSH_PASSWORD}} ssh -W %h:%p -q -o StrictHostKeyChecking=no vlad@89.169.149.234"'
+# data dog vars
+app_port: "3000"
+datadog_api_key: "{{DATADOG_API_KEY}}"
+datadog_site: "{{DATADOG_SITE}}"
+datadog_checks:
+  http_check:
+    init_config:
+    instances:
+      - name: Application health check status
+        url: "http://localhost:{{ app_port }}"
+        timeout: 5
+        method: GET

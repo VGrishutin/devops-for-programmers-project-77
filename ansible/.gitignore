@@ -1,0 +1,4 @@
+vault-password-file
+group_vars/all/local.all.yml
+group_vars/webservers/local.vault.yml
+test.playbook.yml

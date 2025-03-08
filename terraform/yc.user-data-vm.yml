@@ -1,0 +1,13 @@
+#cloud-config
+datasource:
+ Ec2:
+  strict_id: false
+ssh_pwauth: yes
+users:
+  - name: ansible_user
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+chpasswd:
+  list: |
+     ansible_user:12345678
+  expire: False
