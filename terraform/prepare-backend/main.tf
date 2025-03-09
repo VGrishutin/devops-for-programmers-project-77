@@ -1,26 +1,26 @@
 resource "yandex_iam_service_account" "sa_tf_state_manager" {
   name        = "sa-tf-state-manager"
   description = "service account to manage terraform state"
-  folder_id = var.yc_folder_id
+  folder_id   = var.yc_folder_id
 }
 
 resource "yandex_resourcemanager_folder_iam_member" "sa_tsa_tf_state_manager_roles_1" {
   folder_id = var.yc_folder_id
-  role        = "storage.editor"
-  member      = "serviceAccount:${yandex_iam_service_account.sa_tf_state_manager.id}"
+  role      = "storage.editor"
+  member    = "serviceAccount:${yandex_iam_service_account.sa_tf_state_manager.id}"
 }
 
 resource "yandex_resourcemanager_folder_iam_member" "sa_tsa_tf_state_manager_roles_2" {
   folder_id = var.yc_folder_id
-  role        = "ydb.editor"
-  member      = "serviceAccount:${yandex_iam_service_account.sa_tf_state_manager.id}"
+  role      = "ydb.editor"
+  member    = "serviceAccount:${yandex_iam_service_account.sa_tf_state_manager.id}"
 }
 
 # Создание секрета
 
 resource "yandex_lockbox_secret" "secret_sk_sa_tsa_tf_state_manager" {
-  name                = "secret-sk-sa-tsa-tf-state-manager"
-  folder_id           = var.yc_folder_id
+  name      = "secret-sk-sa-tsa-tf-state-manager"
+  folder_id = var.yc_folder_id
 }
 
 data "yandex_lockbox_secret_version" "ver_secret_sk_sa_tsa_tf_state_manager" {
@@ -46,11 +46,11 @@ resource "yandex_iam_service_account_static_access_key" "sk_sa_tsa_tf_state_mana
 
 // Use keys to create bucket
 resource "yandex_storage_bucket" "bucket_tf_state" {
-#   access_key = yandex_iam_service_account_static_access_key.sk_sa_tsa_tf_state_manager.access_key
-#   secret_key = yandex_iam_service_account_static_access_key.sk_sa_tsa_tf_state_manager.secret_key
+  #   access_key = yandex_iam_service_account_static_access_key.sk_sa_tsa_tf_state_manager.access_key
+  #   secret_key = yandex_iam_service_account_static_access_key.sk_sa_tsa_tf_state_manager.secret_key
   access_key = data.yandex_lockbox_secret_version.ver_secret_sk_sa_tsa_tf_state_manager.entries[1].text_value
   secret_key = data.yandex_lockbox_secret_version.ver_secret_sk_sa_tsa_tf_state_manager.entries[0].text_value
-  bucket = "tf-bucket-${var.yc_folder_id}"
+  bucket     = "tf-bucket-${var.yc_folder_id}"
   depends_on = [
     yandex_iam_service_account_static_access_key.sk_sa_tsa_tf_state_manager
   ]
@@ -103,7 +103,7 @@ output "bucket" {
 # resource "yandex_ydb_table" "lock" {
 #   path = "tf_state_lock/lock"
 #   connection_string = yandex_ydb_database_serverless.tf_state.ydb_full_endpoint 
-  
+
 #   column {
 #     name = "LockId"
 #     type = "Utf8"

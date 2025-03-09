@@ -22,7 +22,7 @@ infra-check:
 
 infra-prepare:
 	bash ./scripts/decrypt-data.sh ./secrets/encrypted/ ./vault.password
-	cp ./secrets/encrypted/yc.secrets.auto.tfvars ./terraform/prepare-backend/yc.secrets.auto.tfvars
+	cp ./secrets/decrypted/yc.secrets.auto.tfvars ./terraform/prepare-backend/yc.secrets.auto.tfvars
 
 infra-init:
 	cd ./terraform && terraform init -backend-config="./state.config"
@@ -35,4 +35,3 @@ infra-create-backend:
 
 infra-secret-encrypt:
 	bash ./scripts/encrypt-data.sh ./secrets/decrypted/ ./secrets/encrypted/ ./vault.password
-	
