@@ -1,8 +1,8 @@
 app-deploy: #Install site
-	ansible-playbook ./ansible/playbook.yml -i ./ansible/inventory.yml --vault-password-file ./vault-password
+	ansible-playbook ./ansible/playbook.yml -i ./ansible/inventory.yml --vault-password-file ./vault.password
 
 app-deploy-test:
-	ansible -m ping all -i ./ansible/inventory.yml --vault-password-file ./vault-password
+	ansible -m ping all -i ./ansible/inventory.yml --vault-password-file ./vault.password
 
 app-deploy-prepare: # install ansible roles and collection
 	ansible-galaxy collection install -r requirements.yml
@@ -21,7 +21,7 @@ infra-check:
 	cd ./terraform && terraform plan
 
 infra-prepare:
-	bash ./scripts/decrypt-data.sh ./secrets/encrypted/ ./vault-password
+	bash ./scripts/decrypt-data.sh ./secrets/encrypted/ ./vault.password
 	cp ./secrets/encrypted/yc.secrets.auto.tfvars ./terraform/prepare-backend/yc.secrets.auto.tfvars
 
 infra-init:
@@ -34,7 +34,7 @@ infra-create-backend:
 	cd ./terraform/prepare-backend && terraform apply -auto-approve
 
 infra-secret-encrypt:
-	bash ./scripts/encrypt-data.sh ./secrets/decrypted/ ./secrets/encrypted/ ./vault-password
+	bash ./scripts/encrypt-data.sh ./secrets/decrypted/ ./secrets/encrypted/ ./vault.password
 
 
 
