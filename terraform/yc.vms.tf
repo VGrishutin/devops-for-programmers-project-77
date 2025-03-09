@@ -1,9 +1,9 @@
 # Создание ВМ для сайтв
 resource "yandex_compute_instance" "vm-1" {
-  name        = "vm-1"
-  platform_id = "standard-v1"
-  zone        = var.yc_zone
-  folder_id   = var.yc_folder_id
+  name                      = "vm-1"
+  platform_id               = "standard-v1"
+  zone                      = var.yc_zone
+  folder_id                 = var.yc_folder_id
   allow_stopping_for_update = true
 
   resources {
@@ -18,25 +18,25 @@ resource "yandex_compute_instance" "vm-1" {
 
   network_interface {
     subnet_id          = yandex_vpc_subnet.private-subnet.id
+    nat                = false
+    ip_address         = "192.168.2.10"
     security_group_ids = [ 
       yandex_vpc_security_group.sg-vms.id,
       yandex_vpc_security_group.sg-external.id,
-     ]
-    nat                = false
-    ip_address         = "192.168.2.10"
+    ]
   }
 
   metadata = {
-    user-data          = "${file("./yc.user-data-vm.yml")}"
+    user-data = "${file("./yc.user-data-vm.yml")}"
   }
 
 }
 
 resource "yandex_compute_instance" "vm-2" {
-  name        = "vm-2"
-  platform_id = "standard-v1"
-  zone        = var.yc_zone
-  folder_id   = var.yc_folder_id
+  name                      = "vm-2"
+  platform_id               = "standard-v1"
+  zone                      = var.yc_zone
+  folder_id                 = var.yc_folder_id
   allow_stopping_for_update = true
 
   resources {
@@ -51,16 +51,16 @@ resource "yandex_compute_instance" "vm-2" {
 
   network_interface {
     subnet_id          = yandex_vpc_subnet.private-subnet.id
+    nat                = false
+    ip_address         = "192.168.2.11"
     security_group_ids = [ 
       yandex_vpc_security_group.sg-vms.id,
       yandex_vpc_security_group.sg-external.id,
-     ]
-    nat                = false
-    ip_address         = "192.168.2.11"
+    ]
   }
 
   metadata = {
-    user-data          = "${file("./yc.user-data-vm.yml")}"
+    user-data = "${file("./yc.user-data-vm.yml")}"
   }
 
 }
@@ -77,7 +77,6 @@ resource "yandex_compute_disk" "disk_1" {
   zone      = var.yc_zone
   size      = "10"
   image_id  =  yandex_compute_image.vm-instance-ubuntu.id
-
   folder_id = var.yc_folder_id
 
   labels = {
@@ -91,7 +90,6 @@ resource "yandex_compute_disk" "disk_2" {
   zone      = var.yc_zone
   size      = "10"
   image_id  =  yandex_compute_image.vm-instance-ubuntu.id
-
   folder_id = var.yc_folder_id
 
   labels = {
@@ -111,7 +109,6 @@ resource "yandex_compute_disk" "boot-disk-nat" {
   zone      = var.yc_zone
   size      = "10"
   image_id  =  yandex_compute_image.nat-instance-ubuntu.id
-
   folder_id = var.yc_folder_id
 
   labels = {
@@ -122,9 +119,9 @@ resource "yandex_compute_disk" "boot-disk-nat" {
 
 # Создаем NAT инстансе
 resource "yandex_compute_instance" "nat-instance" {
-  name        = "nat-instance"
-  platform_id = "standard-v1"
-  zone        = var.yc_zone
+  name                      = "nat-instance"
+  platform_id               = "standard-v1"
+  zone                      = var.yc_zone
   allow_stopping_for_update = true
 
   resources {
@@ -138,11 +135,11 @@ resource "yandex_compute_instance" "nat-instance" {
   }
 
   network_interface {
-    subnet_id          = yandex_vpc_subnet.public-subnet.id
+    subnet_id = yandex_vpc_subnet.public-subnet.id
     security_group_ids = [
       yandex_vpc_security_group.sg-nat.id,
       yandex_vpc_security_group.sg-external.id,
-      ]
+    ]
     nat            = true
     nat_ip_address = yandex_vpc_address.addr_nat.external_ipv4_address[0].address
   }

@@ -21,7 +21,7 @@ resource "yandex_vpc_subnet" "private-subnet" {
 
 # Создание статического публичного IP-адреса
 resource "yandex_vpc_address" "addr_nat" {
-  name = "addr_nat"
+  name                = "addr_nat"
   deletion_protection = "true"
 
   external_ipv4_address {
@@ -30,7 +30,7 @@ resource "yandex_vpc_address" "addr_nat" {
 }
 
 resource "yandex_vpc_address" "addr_lb" {
-  name = "addr_lb"
+  name                = "addr_lb"
   deletion_protection = "true"
 
   external_ipv4_address {

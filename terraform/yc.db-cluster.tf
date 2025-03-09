@@ -2,6 +2,7 @@ resource "yandex_mdb_postgresql_cluster" "default" {
   name        = "default-db-cluster"
   environment = "PRESTABLE"
   network_id  = yandex_vpc_network.network-1.id
+  
   deletion_protection = true
 
   config {
@@ -12,7 +13,7 @@ resource "yandex_mdb_postgresql_cluster" "default" {
       disk_size          = 10
     }
     postgresql_config = {
-      max_connections    = 100
+      max_connections = 100
     }
   }
 
@@ -33,6 +34,7 @@ resource "yandex_mdb_postgresql_user" "default" {
   cluster_id = yandex_mdb_postgresql_cluster.default.id
   name       = var.db_user
   password   = var.db_password
+
   deletion_protection = true
 }
 
@@ -43,5 +45,6 @@ resource "yandex_mdb_postgresql_database" "default" {
   lc_collate = "en_US.UTF-8"
   lc_type    = "en_US.UTF-8"
   depends_on = [yandex_mdb_postgresql_user.default]
+
   deletion_protection = true
 }
