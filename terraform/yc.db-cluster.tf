@@ -2,7 +2,7 @@ resource "yandex_mdb_postgresql_cluster" "default" {
   name        = "default-db-cluster"
   environment = "PRESTABLE"
   network_id  = yandex_vpc_network.network-1.id
-  
+
   deletion_protection = true
 
   config {

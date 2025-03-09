@@ -25,11 +25,11 @@ resource "yandex_vpc_security_group" "sg-nat" {
   }
 
   ingress {
-      protocol          = "ANY"
-      description       = "vms"
-      from_port         = 0
-      to_port           = 65535
-      security_group_id = yandex_vpc_security_group.sg-external.id
+    protocol          = "ANY"
+    description       = "vms"
+    from_port         = 0
+    to_port           = 65535
+    security_group_id = yandex_vpc_security_group.sg-external.id
   }
 
 }
@@ -39,56 +39,56 @@ resource "yandex_vpc_security_group" "sg-vms" {
   network_id = yandex_vpc_network.network-1.id
 
   ingress {
-      protocol          = "TCP"
-      description       = "ssh"
-      from_port         = 22
-      to_port           = 22
-      security_group_id = yandex_vpc_security_group.sg-nat.id
+    protocol          = "TCP"
+    description       = "ssh"
+    from_port         = 22
+    to_port           = 22
+    security_group_id = yandex_vpc_security_group.sg-nat.id
   }
 
   ingress {
-      protocol          = "TCP"
-      description       = "balancer"
-      from_port         = 80
-      to_port           = 80
-      security_group_id = yandex_vpc_security_group.sg-lb.id
+    protocol          = "TCP"
+    description       = "balancer"
+    from_port         = 80
+    to_port           = 80
+    security_group_id = yandex_vpc_security_group.sg-lb.id
   }
 
   ingress {
-      protocol          = "ANY"
-      description       = "from members of the same security group"
-      from_port         = 0
-      to_port           = 65535
-      predefined_target = "self_security_group"
+    protocol          = "ANY"
+    description       = "from members of the same security group"
+    from_port         = 0
+    to_port           = 65535
+    predefined_target = "self_security_group"
   }
 
   egress {
-      protocol          = "ANY"
-      description       = "to members of the same security group"
-      from_port         = 0
-      to_port           = 65535
-      predefined_target = "self_security_group"
-    } 
+    protocol          = "ANY"
+    description       = "to members of the same security group"
+    from_port         = 0
+    to_port           = 65535
+    predefined_target = "self_security_group"
+  }
 
   egress {
-      protocol       = "ANY"
-      description    = "to anyone"
-      v4_cidr_blocks = ["0.0.0.0/0"]
-      from_port      = 0
-      to_port        = 65535
-    } 
+    protocol       = "ANY"
+    description    = "to anyone"
+    v4_cidr_blocks = ["0.0.0.0/0"]
+    from_port      = 0
+    to_port        = 65535
+  }
   egress {
-      protocol          = "ANY"
-      description       = "external"
-      security_group_id = yandex_vpc_security_group.sg-external.id
-      from_port         = 0
-      to_port           = 65535
-    } 
+    protocol          = "ANY"
+    description       = "external"
+    security_group_id = yandex_vpc_security_group.sg-external.id
+    from_port         = 0
+    to_port           = 65535
+  }
 }
 
 resource "yandex_vpc_security_group" "sg-lb" {
-  name        = "sg-lb"
-  network_id  = yandex_vpc_network.network-1.id
+  name       = "sg-lb"
+  network_id = yandex_vpc_network.network-1.id
 
   egress {
     protocol       = "ANY"
@@ -117,5 +117,5 @@ resource "yandex_vpc_security_group" "sg-lb" {
     description       = "healthchecks"
     predefined_target = "loadbalancer_healthchecks"
     port              = 30080
- }
+  }
 }

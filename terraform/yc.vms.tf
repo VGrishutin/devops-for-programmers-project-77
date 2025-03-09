@@ -17,10 +17,10 @@ resource "yandex_compute_instance" "vm-1" {
   }
 
   network_interface {
-    subnet_id          = yandex_vpc_subnet.private-subnet.id
-    nat                = false
-    ip_address         = "192.168.2.10"
-    security_group_ids = [ 
+    subnet_id  = yandex_vpc_subnet.private-subnet.id
+    nat        = false
+    ip_address = "192.168.2.10"
+    security_group_ids = [
       yandex_vpc_security_group.sg-vms.id,
       yandex_vpc_security_group.sg-external.id,
     ]
@@ -50,10 +50,10 @@ resource "yandex_compute_instance" "vm-2" {
   }
 
   network_interface {
-    subnet_id          = yandex_vpc_subnet.private-subnet.id
-    nat                = false
-    ip_address         = "192.168.2.11"
-    security_group_ids = [ 
+    subnet_id  = yandex_vpc_subnet.private-subnet.id
+    nat        = false
+    ip_address = "192.168.2.11"
+    security_group_ids = [
       yandex_vpc_security_group.sg-vms.id,
       yandex_vpc_security_group.sg-external.id,
     ]
@@ -76,7 +76,7 @@ resource "yandex_compute_disk" "disk_1" {
   type      = "network-hdd"
   zone      = var.yc_zone
   size      = "10"
-  image_id  =  yandex_compute_image.vm-instance-ubuntu.id
+  image_id  = yandex_compute_image.vm-instance-ubuntu.id
   folder_id = var.yc_folder_id
 
   labels = {
@@ -89,7 +89,7 @@ resource "yandex_compute_disk" "disk_2" {
   type      = "network-hdd"
   zone      = var.yc_zone
   size      = "10"
-  image_id  =  yandex_compute_image.vm-instance-ubuntu.id
+  image_id  = yandex_compute_image.vm-instance-ubuntu.id
   folder_id = var.yc_folder_id
 
   labels = {
@@ -108,7 +108,7 @@ resource "yandex_compute_disk" "boot-disk-nat" {
   type      = "network-hdd"
   zone      = var.yc_zone
   size      = "10"
-  image_id  =  yandex_compute_image.nat-instance-ubuntu.id
+  image_id  = yandex_compute_image.nat-instance-ubuntu.id
   folder_id = var.yc_folder_id
 
   labels = {

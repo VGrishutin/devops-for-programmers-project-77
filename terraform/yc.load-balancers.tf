@@ -1,7 +1,7 @@
 
 # создаем alb
 resource "yandex_alb_target_group" "alb-tg" {
-  name                   = "alb-tg"
+  name = "alb-tg"
 
   target {
     subnet_id  = yandex_vpc_subnet.private-subnet.id
@@ -45,8 +45,8 @@ resource "yandex_alb_http_router" "alb-router" {
 resource "yandex_alb_virtual_host" "alb-host" {
   name = "alb-host"
   authority = ["hexlet-p2.mexaho.online",
-               yandex_vpc_address.addr_lb.external_ipv4_address[0].address
-              ]
+    yandex_vpc_address.addr_lb.external_ipv4_address[0].address
+  ]
 
   http_router_id = yandex_alb_http_router.alb-router.id
   route {
@@ -58,24 +58,24 @@ resource "yandex_alb_virtual_host" "alb-host" {
       }
     }
   }
-}    
+}
 
 # Импорт TLS-сертификат сайта
 
 resource "yandex_cm_certificate" "imported-cert" {
-  name    = "imported-cert"
+  name = "imported-cert"
 
   self_managed {
-    certificate = "${file("./certificate/certificate.crt")}"
-    private_key = "${file("./certificate//mexaho.online.key")}"
+    certificate = file("./certificate/certificate.crt")
+    private_key = file("./certificate//mexaho.online.key")
   }
 }
 
 # Создание L7-балансировщика
 
 resource "yandex_alb_load_balancer" "alb-balancer" {
-  name        = "alb-balancer"
-  network_id  = yandex_vpc_network.network-1.id
+  name               = "alb-balancer"
+  network_id         = yandex_vpc_network.network-1.id
   security_group_ids = [yandex_vpc_security_group.sg-lb.id]
 
   allocation_policy {
@@ -93,7 +93,7 @@ resource "yandex_alb_load_balancer" "alb-balancer" {
           address = yandex_vpc_address.addr_lb.external_ipv4_address[0].address
         }
       }
-    ports = [ 80 ]
+      ports = [80]
     }
     http {
       redirects {
@@ -110,7 +110,7 @@ resource "yandex_alb_load_balancer" "alb-balancer" {
           address = yandex_vpc_address.addr_lb.external_ipv4_address[0].address
         }
       }
-      ports = [ 443 ]
+      ports = [443]
     }
     tls {
       default_handler {

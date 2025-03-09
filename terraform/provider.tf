@@ -1,12 +1,12 @@
 terraform {
   required_providers {
     yandex = {
-      source = "yandex-cloud/yandex"
+      source  = "yandex-cloud/yandex"
       version = ">= 0.47.0"
       # source = "terraform-registry.storage.yandexcloud.net/yandex-cloud/yandex" # Alternate link
     }
     datadog = {
-      source = "DataDog/datadog"
+      source  = "DataDog/datadog"
       version = ">= 3.57.0"
     }
     # ansible = {
