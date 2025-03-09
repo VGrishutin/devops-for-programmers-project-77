@@ -48,7 +48,7 @@
         state: directory
         # owner: "{{ansible_user}}"
         # group: "{{ansible_user}}"
-        mode: '777'        
+        mode: '777'
       become: true
 
     - name: upload env file for redmine
@@ -57,7 +57,7 @@
         dest: /usr/src/redmine/files/redmine.env
         # owner: "{{ansible_user}}"
         # group: "{{ansible_user}}"
-        mode: '777'        
+        mode: '777'
 
 
     # - name: Ensure docker is in a running state
