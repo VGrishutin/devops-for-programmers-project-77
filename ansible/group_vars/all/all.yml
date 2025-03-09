@@ -1,7 +1,7 @@
 ansible_connection: ssh
 ansible_user: ansible_user
 
-REDMINE_DB_POSTGRES: rc1a-ivql9uji7101d1v2.mdb.yandexcloud.net
+REDMINE_DB_POSTGRES: rc1a-cfsj2kpk560nan3b.mdb.yandexcloud.net
 REDMINE_DB_PORT: "6432"
 REDMINE_DB_USERNAME: redmine-user
 REDMINE_DB_DATABASE: redmine-db
