@@ -35,6 +35,4 @@ infra-create-backend:
 
 infra-secret-encrypt:
 	bash ./scripts/encrypt-data.sh ./secrets/decrypted/ ./secrets/encrypted/ ./vault.password
-
-
-
+	
