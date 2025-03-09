@@ -148,6 +148,6 @@ resource "yandex_compute_instance" "nat-instance" {
   }
 
   metadata = {
-    user-data          = "${file("./yc.user-data-nat.yml")}"
+    user-data = "${file("./yc.user-data-nat.yml")}"
   }
 }
