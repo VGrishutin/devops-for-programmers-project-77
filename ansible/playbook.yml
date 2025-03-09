@@ -15,26 +15,26 @@
         pip_install_packages:
           - name: docker
       become: true
-    # - role: geerlingguy.docker
-    #   become: true
-    # - role: DataDog.datadog
-    #   become: true  
-    #   when: 
-    #     - inventory_hostname in groups["webservers"]
+    - role: geerlingguy.docker
+      become: true
+    - role: DataDog.datadog
+      become: true  
+      when: 
+        - inventory_hostname in groups["webservers"]
 
   tasks:
-    # - name: Get running containers
-    #   community.docker.docker_host_info:
-    #     containers: yes
-    #   register: docker_info
-    #   become: true
+    - name: Get running containers
+      community.docker.docker_host_info:
+        containers: yes
+      register: docker_info
+      become: true
 
-    # - name: Stop running containers
-    #   community.docker.docker_container:
-    #     name: "{{ item }}"
-    #     state: stopped
-    #   loop: "{{ docker_info.containers | map(attribute='Id') | list }}"
-    #   become: true
+    - name: Stop running containers
+      community.docker.docker_container:
+        name: "{{ item }}"
+        state: stopped
+      loop: "{{ docker_info.containers | map(attribute='Id') | list }}"
+      become: true
 
     - name: Delete existing dist folder
       file:
@@ -46,8 +46,8 @@
       ansible.builtin.file:
         path: /usr/src/redmine/files
         state: directory
-        # owner: "{{ansible_user}}"
-        # group: "{{ansible_user}}"
+        owner: "{{ansible_user}}"
+        group: "{{ansible_user}}"
         mode: '777'        
       become: true
 
@@ -55,20 +55,20 @@
       ansible.builtin.template:
         src: templates/redmine.env.j2
         dest: /usr/src/redmine/files/redmine.env
-        # owner: "{{ansible_user}}"
-        # group: "{{ansible_user}}"
+        owner: "{{ansible_user}}"
+        group: "{{ansible_user}}"
         mode: '777'        
 
 
-    # - name: Ensure docker is in a running state
-    #   ansible.builtin.service:
-    #     name: docker 
-    #     state: started
-    #   register: dockerDetails
-    #   until: dockerDetails.status.ActiveState == "active"
-    #   retries: 15
-    #   delay: 20
-    #   become: true 
+    - name: Ensure docker is in a running state
+      ansible.builtin.service:
+        name: docker 
+        state: started
+      register: dockerDetails
+      until: dockerDetails.status.ActiveState == "active"
+      retries: 15
+      delay: 20
+      become: true 
 
     - name: Create a redmine container
       community.docker.docker_container:
